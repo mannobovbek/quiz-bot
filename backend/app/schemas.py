@@ -1,12 +1,13 @@
+from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field, conint
+from pydantic import BaseModel, EmailStr, Field, conint
 
 QuizOption = conint(ge=1, le=4)
 
 
 class QuizBase(BaseModel):
-    question: str = Field(..., min_length=1)
+    question: str = Field(..., min_length=5)
     option1: str = Field(..., min_length=1)
     option2: str = Field(..., min_length=1)
     option3: str = Field(..., min_length=1)
@@ -15,7 +16,7 @@ class QuizBase(BaseModel):
 
 
 class QuizCreate(QuizBase):
-    pass
+    category_id: Optional[int] = None
 
 
 class QuizUpdate(BaseModel):
@@ -29,6 +30,44 @@ class QuizUpdate(BaseModel):
 
 class QuizRead(QuizBase):
     id: int
+    category_id: Optional[int] = None
+
+    class Config:
+        from_attributes = True
+
+
+
+
+class StudentBase(BaseModel):
+    name: str = Field(..., min_length=2)
+
+    email: EmailStr
+    score: int = Field(0, ge=0)
+
+
+class StudentCreate(StudentBase):
+    pass
+
+
+class StudentRead(StudentBase):
+    id: int
+    registered_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class CategoryBase(BaseModel):
+    name: str = Field(..., min_length=1)
+    description: Optional[str] = None
+
+
+class CategoryCreate(CategoryBase):
+    pass
+
+
+class CategoryRead(CategoryBase):
+    id: int
+    created_at: datetime
 
     class Config:
         orm_mode = True
