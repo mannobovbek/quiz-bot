@@ -4,4 +4,4 @@ import os
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHANNEL_ID = "@yourchannel"
+CHANNEL_ID = "@Registan_LC"
